@@ -1,21 +1,35 @@
 async function buscaEndereco(cep){
+    let mensagemErro = document.getElementById('erro');
+    mensagemErro.innerHTML = "";
     try {
         let consultaCEP = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
         let consultaCEPConvertida = await consultaCEP.json();
         if(consultaCEPConvertida.erro){
             throw Error("CEP não encontrado")
         }
-        return consultaCEPConvertida;
+        let cidade = document.getElementById('cidade');
+        let logradouro = document.getElementById('endereco');
+        let estado = document.getElementById('estado');
+
+        cidade.value = consultaCEPConvertida.localidade;
+        logradouro.value = consultaCEPConvertida.logradouro;
+        estado.value = consultaCEPConvertida.uf;
+
     } catch (e) {
-        return e;
+        let tipoErro = e==="CEP não encontrado"? "não encontrado" : "inválido";
+        mensagemErro.innerHTML = `<p>CEP ${tipoErro}. Tente novamente!</p>`
     }
 };
 
-let ceps = ["01001001","01001089","01001algo","01001011","01001666"];
+let cep = document.getElementById('cep');
+cep.addEventListener("focusout", () => buscaEndereco(cep.value));
+
+
+/* let ceps = ["01001001","01001089","01001algo","01001011","01001666"];
 let cepsAPI = ceps.map(cep => buscaEndereco(cep))
 
 //console.log(cepsAPI);
-Promise.all(cepsAPI).then(resposta => console.log(resposta));
+Promise.all(cepsAPI).then(resposta => console.log(resposta)); */
 
 
 /* Primeira resolução, Isso pode gerar o callback hell

@@ -48,11 +48,13 @@
     padding: 1em 4em;
     font-weight: 700;
     font-size: 20px;
-    line-height: 30px;
+    line-height: 25px;
     border: none;
     color: var(--branco);
     cursor: pointer;
     float: right;
+    border-radius: 40px;
+    margin-top: 1rem;
 }
 
 .formulario__erro {
